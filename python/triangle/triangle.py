@@ -1,17 +1,18 @@
-def is_triangle(func):
-    """
-    The Triangle Inequality Theorem states: c < a + b. We can simply add c to both sides which then makes it 2*c < a + b + c. This formula only needs to be performed once (as opposed to once for every side) if c is the side with the largest length so it can be simplified to 2*max(s) < sum(s).
-    """
-    return lambda s: all(s) and 2 * max(s) < sum(s) and func(s)
+def is_triangle(a, b, c):
+    a, b, c = storted([a, b, c])
+    return a > 0 and a + b > c
+
 
 @is_triangle
-def equilateral(sides):
-    return len(set(sides)) == 1
+def is_equilateral(a, b, c):
+    return a == b == c
+
 
 @is_triangle
-def isosceles(sides):
-    return len(set(sides)) < 3
+def is_isosceles(a, b, c):
+    return len(set([a, b, c])) < 3
+
 
 @is_triangle
-def scalene(sides):
-    return len(set(sides)) == 3
+def is_scalene(a, b, c):
+    return len(set([a, b, c])) == 3
