@@ -1,27 +1,37 @@
-#!/usr/bin/python3
+from functools import wraps
 
-def check(number):
+
+def check_if_number(func):
+    @wraps(func)
+    def wrapper(number):
+        return is_number(number) and func(number)
+    return wrapper
+
+    
+def is_number(number):
     if number <= 0:
-      raise ValueError("Error: expected positive number!")
+        raise ValueError("Error: expected a positive number!")
     else:
-      return number
+        return number
 
 
+@check_if_number
 def is_even(number):
     return number // 2
 
 
+@check_if_number
 def is_odd(number):
     return number * 3 + 1
 
 
+@check_if_number
 def steps(number):
     count_steps = 0
-    valid_number = check(number)
-    while valid_number > 1:
-      if valid_number % 2 == 0:
-        valid_number = is_even(valid_number)
+    while number > 1:
+      if number % 2 == 0:
+        number = is_even(number)
       else:
-        valid_number = is_odd(valid_number)
+        number = is_odd(number)
       count_steps += 1
     return count_steps
