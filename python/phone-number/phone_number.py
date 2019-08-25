@@ -1,13 +1,28 @@
 import re
 
-PHONE_REG_PAT = r"1?\D*(\d{3})\D*(\d{3})\D*(\d{4})\D*$"
 
-class Phone(object):
+class Phone:
+    _pattern = re.compile(r"""
+        ^\+?1?              # optional literal and country code
+        (?:[-. ]+)?         # optional separators
+        \(?([2-9]\d{2})\)?  # the area code, with or without surrounding parens
+        (?:[-. ]+)?         # optional separators
+        ([2-9]\d{2})        # the exchange code
+        (?:[-. ]+)?         # optional separators
+        (\d{4})$            # the subscriber number
+    """, re.VERBOSE)
+
+
     def __init__(self, phone_number):
-      match_phone_number = re.search(PHONE_REG_PAT, phone_number)
-      self.number = "".join(match_phone_number.groups())
+        try:
+            self.area_code, self.exchange, self.subscriber = \
+            self._pattern.search(phone_number.strip()).groups()
+        except AttributeError:
+            raise ValueError("Invalid phone number!")
 
-    def pretty(number):
-      return "({}) {}-{}".format(self.number[:3], self.number[3:6],
-              self.number[6:])
-    
+    @property
+    def number(self):
+        return "{}{}{}".format(self.area_code, self.exchange, self.subscriber)
+
+    def pretty(self):
+        return "({}) {}-{}".format(self.area_code, self.exchange, self.subscriber)
