@@ -16,7 +16,8 @@ verses = [["first", "and a Partridge in a Pear Tree."],
 
 
 def get_verses(line):
-    verse = f"On the {verses[line][0]} day of Christmas my true love gave to me: "
+    verse = f"On the {verses[line][0]} day of Christmas " \
+    "my true love gave to me: "
     for i in range(line, -1, -1):
         verse += f"{verses[i][1]}"
     return verse.replace("and ", "") if line == 0 else verse
