@@ -3,9 +3,5 @@ __pycache__/
 .exercism/
 *.pyc
 
-# Folders
-
-java/build/
-
 # Java files:
 *.gradle
