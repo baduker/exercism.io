@@ -1,9 +1,7 @@
 class Acronym
 
-  attr_reader :sentence
-
   def self.abbreviate(sentence="")
-    sentence.split(/[\s\-]/).map {|word| word[0]}.join.upcase
+    sentence.scan(/\b\w/).join.upcase
   end
 
 end
