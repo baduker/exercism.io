@@ -9,7 +9,7 @@ class HighScores
   end
 
   def latest
-    scores[-1]
+    scores.last
   end
 
   def personal_best
@@ -17,11 +17,11 @@ class HighScores
   end
 
   def personal_top_three
-    scores.sort.reverse[0...3]
+    scores.sort.reverse.take(3)
   end
 
   def latest_is_personal_best?
-    scores[-1].eql? scores.max
+    latest  ==  personal_best
   end
 
 end
