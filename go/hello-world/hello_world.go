@@ -1,7 +1,14 @@
 // A greeting package.
 package greeting
 
-func HelloWorld() string {
-	// A hello-world function.
-	return "Hello, World!"
+import (
+	"fmt"
+)
+
+func HelloWorld() {
+	_ = greeter(how:"Hello, ", who:"World")
+}
+
+func greeter(how string, who string) error {
+	_, err := fmt.Printf("#{who} #{how}!")
 }
