@@ -3,23 +3,23 @@ package raindrops
 
 import (
 	"strconv"
-	"strings"
+	// "strings"
+	// "github.com/AlasdairF/Sort/Int"
 )
 
-// RainDrops converts a number to a string based on the number's factors
-func Convert(number int) string {
-	sounds := map[int]string{3: "Pling", 5: "Plang", 7: "Plong"}
-	var speak []string
-
-	for key, value := range sounds {
-		if number % key == 0 {
-			speak = append(speak, value)
-		}
+// Convert converts a number to a string based on the number's factors
+func Convert(num int) (r string) {
+	if num%3 == 0 {
+		r += "Pling"
 	}
-
-	if len(speak) != 0 {
-		return strings.Join(speak, "")
+	if num%5 == 0 {
+		r += "Plang"
 	}
-
-	return strconv.Itoa(number)
+	if num%7 == 0 {
+		r += "Plong"
+	}
+	if r == "" {
+		r = strconv.Itoa(num)
+	}
+	return
 }
