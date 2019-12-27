@@ -1,18 +1,19 @@
-def is_triangle(a, b, c):
-    a, b, c = storted([a, b, c])
+def is_triangle(sides):
+    a, b, c = sorted(sides)
     return a > 0 and a + b > c
 
 
 @is_triangle
-def is_equilateral(a, b, c):
+def equilateral(sides: list) -> bool:
+    a, b, c = sides
     return a == b == c
 
 
 @is_triangle
-def is_isosceles(a, b, c):
-    return len(set([a, b, c])) < 3
+def isosceles(sides: list) -> bool:
+    return len(set(sides)) < 3
 
 
 @is_triangle
-def is_scalene(a, b, c):
-    return len(set([a, b, c])) == 3
+def scalene(sides: list) -> bool:
+    return len(set(sides)) == 3
