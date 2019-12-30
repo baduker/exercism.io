@@ -10,12 +10,14 @@ import (
 // IsIsogram determines if a word or phrase is an isogram.
 func IsIsogram(text string) bool {
 	charMap := make(map[rune]int)
-	for _, char := range strings.ToLower(text) {
-		if unicode.IsLetter(char) {
-			charMap[char]++
-			if charMap[char] > 1 {
-				return false
-			}
+	text = strings.ToLower(text)
+	for _, char := range text {
+		if !unicode.IsLetter(char) {
+			continue
+		}
+		charMap[char]++
+		if charMap[char] > 1 {
+			return false
 		}
 	}
 	return true
