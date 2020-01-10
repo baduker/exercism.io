@@ -4,7 +4,6 @@ package isbn
 // IsValidISBN performs the ISBN-10 verification process
 func IsValidISBN(isbn string) bool {
 	weight, sum := 10, 0
-
 	for index, digit := range isbn {
 		if digit >= '0' && digit <= '9' {
 			sum += int(digit-'0') * weight
