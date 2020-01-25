@@ -7,7 +7,7 @@ type FreqMap map[rune]int
 
 // ConcurrentFrequency counts the frequency of letters
 func ConcurrentFrequency(source []string) FreqMap {
-	ch := make(chan FreqMap)
+	ch := make(chan FreqMap, 10)
 
 	for _, text := range source {
 		go func(word string) {
