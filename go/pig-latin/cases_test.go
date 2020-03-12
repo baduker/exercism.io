@@ -1,8 +1,4 @@
-package piglatin
-
-// Source: exercism/problem-specifications
-// Commit: d77de78 pig-latin: Apply new "input" policy
-// Problem Specifications Version: 1.2.0
+package igpay
 
 var testCases = []struct {
 	description string
