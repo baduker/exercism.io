@@ -1,9 +1,5 @@
 package encode
 
-// Source: exercism/problem-specifications
-// Commit: 1b7900e run-length-encoding: apply "input" policy
-// Problem Specifications Version: 1.1.0
-
 // run-length encode a string
 var encodeTests = []struct {
 	input       string

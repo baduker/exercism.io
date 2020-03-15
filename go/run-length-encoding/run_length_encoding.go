@@ -10,48 +10,48 @@ type runLength struct {
 	enc, dec func(string) string
 }
 
-func newRL() *runLength {
+func newRunLength() *runLength {
 	return &runLength{
 		enc: func(input string) string {
 			var result strings.Builder
 			for len(input) > 0 {
-				letter := input[0]
+				firstLetter := input[0]
 				inputLength := len(input)
-				input = strings.TrimLeft(input, string(letter))
+				input = strings.TrimLeft(input, string(firstLetter))
 				if counter := inputLength - len(input); counter > 1 {
 					result.WriteString(strconv.Itoa(counter))
 				}
-				result.WriteString(string(letter))
+				result.WriteString(string(firstLetter))
 			}
 			return result.String()
 		},
 		dec: func(input string) string {
 			var result strings.Builder
 			for len(input) > 0 {
-				index := strings.IndexFunc(input, func(r rune) bool {return !unicode.IsDigit(r)})
-				n := 1
-				if index != 0 {
-					n, _ = strconv.Atoi(input[:index])
+				letterIndex := strings.IndexFunc(input, func(r rune) bool {return !unicode.IsDigit(r)})
+				multiply := 1
+				if letterIndex != 0 {
+					multiply, _ = strconv.Atoi(input[:letterIndex])
 				}
-				result.WriteString(strings.Repeat(string(input[index]), n))
-				input = input[index+1:]
+				result.WriteString(strings.Repeat(string(input[letterIndex]), multiply))
+				input = input[letterIndex+1:]
 			}
 			return result.String()
 		}}
 }
 
-func (rle runLength) encode(input string) string {
-	return rle.enc(input)
+func (rl runLength) encode(input string) string {
+	return rl.enc(input)
 }
 
-func (rle runLength) decode(input string) string {
-	return rle.dec(input)
+func (rl runLength) decode(input string) string {
+	return rl.dec(input)
 }
 
 func RunLengthEncode(input string) string {
-	return newRL().encode(input)
+	return newRunLength().encode(input)
 }
 
 func RunLengthDecode(input string) string {
-	return newRL().decode(input)
+	return newRunLength().decode(input)
 }

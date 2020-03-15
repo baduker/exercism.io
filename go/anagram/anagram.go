@@ -1,31 +1,31 @@
 package anagram
 
 import (
-	"reflect"
 	"strings"
+	"unicode"
 )
 
-func countChars(word string) (count map[rune]int) {
-	count = make(map[rune]int)
+
+func countChars(word string) (count [26]rune) {
 	word = strings.ToLower(word)
-	for _, value := range word {
-		if _, ok := count[value]; ok {
-			count[value] += 1
-		} else {
-			count[value] = 1
+	for _, char := range word {
+		if unicode.IsLetter(char) {
+			count[char-'a']++
 		}
 	}
 	return
 }
 
 func Detect(word string, candidates []string) (anagram []string) {
-	candidateOne := countChars(word)
-	for _, item := range candidates {
-		candidateTwo := countChars(item)
-		if !reflect.DeepEqual(candidateOne, candidateTwo) {
+	source := countChars(word)
+	for _, candidate := range candidates {
+		if len(word) != len(candidate) || strings.EqualFold(word, candidate) {
 			continue
 		}
-		anagram = append(anagram, item)
+		candidateTwo := countChars(candidate)
+		if source == candidateTwo {
+			anagram = append(anagram, candidate)
+		}
 	}
 	return
 }

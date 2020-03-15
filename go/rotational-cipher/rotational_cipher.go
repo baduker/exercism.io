@@ -29,13 +29,13 @@ func newCaesar(key int) (*action, bool) {
 }
 
 func (act action) cipher(plainText string) string {
-	return strings.Map(act.enc, plainText)
+	return strings.Map(act.encode, plainText)
 }
 
 func RotationalCipher(plainText string, rotKey int) string {
-	newCipher, ok := newCaesar(rotKey)
+	newRotCipher, ok := newCaesar(rotKey)
 	if !ok {
 		fmt.Println("Key:", rotKey, "is invalid.")
 	}
-	return newCipher.cipher(plainText)
+	return newRotCipher.cipher(plainText)
 }
