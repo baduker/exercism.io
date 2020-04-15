@@ -1,54 +1,72 @@
 package tree
 
-import (
-	"fmt"
-)
+import "fmt"
 
 const rootID = 0
 
+// Record contains its ID & Parent
 type Record struct {
-	ID, Parent int
+	ID     int
+	Parent int
 }
 
+// Node contains its ID & Children
 type Node struct {
 	ID       int
 	Children []*Node
 }
 
-// Build converts an unordered slice of Records into a hierarchical tree of Nodes,
-// after validating that the tree is not a graph and that the records have
-// a contiguous range of IDs.
+// Build converts an unordered slice of Records into a tree of Nodes.
 func Build(records []Record) (*Node, error) {
 	if len(records) == 0 {
 		return nil, nil
 	}
 
-	positions := make([]int, len(records))
-	for i, r := range records {
-		if r.ID < rootID || r.ID >= len(records) {
-			return nil, fmt.Errorf("out of bounds record id %d", r.ID)
-		}
-
-		positions[r.ID] = i
+	positions, err := getPositions(records)
+	if err != nil {
+		return nil, err
 	}
 
 	nodes := make([]Node, len(records))
-	for i := range positions {
-		r := records[positions[i]]
-		if r.ID != i {
-			return nil, fmt.Errorf("non-contiguous node %d (want %d)", r.ID, i)
+	for index := range positions {
+		record := records[positions[index]]
+		if err := checkRecord(record, index); err != nil {
+			return nil, err
 		}
-		validParentForChild := (r.ID > r.Parent) || (r.ID == rootID && r.Parent == rootID)
-		if !validParentForChild {
-			return nil, fmt.Errorf("node %d has impossible parent %d", r.ID, r.Parent)
-		}
-
-		nodes[i].ID = i
-		if i != rootID {
-			p := &nodes[r.Parent]
-			p.Children = append(p.Children, &nodes[i])
-		}
+		nodes[index].ID = index
+		addChildren(index, nodes, record)
 	}
-
 	return &nodes[0], nil
+}
+
+// addChildren appends a node to its parent
+func addChildren(index int, nodes []Node, record Record) {
+	if index != rootID {
+		parent := &nodes[record.Parent]
+		parent.Children = append(parent.Children, &nodes[index])
+	}
+}
+
+// checkRecord validates if a record is in sequence or has a valid parent
+func checkRecord(record Record, index int) error {
+	if record.ID != index {
+		return fmt.Errorf("node %d is out of sequence", record.ID)
+	}
+	hasValidParent := (record.ID > record.Parent) || (record.ID == rootID && record.Parent == rootID)
+	if !hasValidParent {
+		return fmt.Errorf("node %d can't belong to %d", record.ID, record.Parent)
+	}
+	return nil
+}
+
+// getPositions
+func getPositions(records []Record) ([]int, error) {
+	positions := make([]int, len(records))
+	for index, record := range records {
+		if record.ID < rootID || record.ID >= len(records) {
+			return nil, fmt.Errorf("invalid record id %d", record.ID)
+		}
+		positions[record.ID] = index
+	}
+	return positions, nil
 }
