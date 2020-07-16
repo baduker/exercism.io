@@ -1,2 +1,2 @@
 # exercism.io
-My solutions to Python Exercism problems
+My solutions to various exercism challanges in a handful of languages (mostly Python and Go).
